@@ -1,14 +1,24 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { Pool } = require("pg");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
+
+// Enable CORS for frontend
+app.use(cors());
+
+// Parse JSON
 app.use(bodyParser.json());
 
-// PostgreSQL connection (Supabase)
+// PostgreSQL connection
 const db = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false }
+      : false,
 });
 
 // ----------------------
@@ -87,5 +97,5 @@ app.post("/shipments", async (req, res) => {
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
-  console.log("Server running on http://localhost:8080");
+  console.log(`Server running on http://localhost:${PORT}`);
 });
