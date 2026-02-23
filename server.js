@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { Pool } = require("pg");
+require("dotenv").config();
 
 const app = express();
 app.use(bodyParser.json());
@@ -8,7 +9,6 @@ app.use(bodyParser.json());
 // PostgreSQL connection (Supabase)
 const db = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
 });
 
 // ----------------------
